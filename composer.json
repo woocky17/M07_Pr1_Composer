@@ -1,0 +1,19 @@
+{
+    "name": "david/m07_pr1_composer",
+    "autoload": {
+        "psr-4": {
+            "David\\M07Pr1Composer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Woocky17",
+            "email": "davidortetsabater@gmail.com"
+        }
+    ],
+    "require": {
+        "monolog/monolog": "^3.8",
+        "intervention/image": "^3.9",
+        "ramsey/uuid": "^4.7"
+    }
+}
