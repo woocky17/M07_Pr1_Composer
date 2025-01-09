@@ -1,25 +1,32 @@
 <?php
-require_once 'Reparation.php';
-
+require_once '../Model/Reparation.php';
 
 class ServiceReparation
 {
     public function getReparation($idReparation)
     {
-        $data = Reparation::fetchReparationById($idReparation);
+        $data = Controller::fetchReparationById($idReparation);
 
         if (!$data) {
             return null;
         }
 
 
-        return  new Reparation($data);
+        return new Reparation(
+            $data->status,
+            $data->name,
+            $data->registerDate,
+            $data->licensePlate,
+            $data->photo
+        );
     }
 
     public function insertReparation($status, $name, $registerDate, $licensePlate, $photo)
     {
         try {
-            Reparation::addReparation($status, $name, $registerDate, $licensePlate, $photo);
+            Controller::addReparation($status, $name, $registerDate, $licensePlate, $photo);
+
+            return new Reparation($status, $name, $registerDate, $licensePlate, $photo);
         } catch (Exception $e) {
             return "Error al insertar reparación: " . $e->getMessage();
         }

@@ -40,8 +40,8 @@ if (isset($_GET["rol"])) {
             <input type="text" name="licensePlate" id="licensePlate" placeholder="Formato: 9999-XXX" maxlength="8" pattern="[0-9]{4}-[A-Z]{3}" title="Formato válido: 9999-XXX" required>
             <br><br>
 
-            <label for="photo">Foto de la Reparación:</label>
-            <input type="file" name="photo" id="photo" accept="image/*" required>
+            <label for="photo">Foto:</label>
+            <input type="file" name="photo" id="photo" accept="image/*">
             <br><br>
 
             <button type="submit" name="action" value="insert">Insertar Reparación</button>
@@ -63,30 +63,26 @@ class ViewReparation
             return;
         }
 
-        // Incluir Bootstrap desde CDN
         echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">';
 
         echo "<div class='container mt-5'>";
         echo "<h1 class='mb-4'>Detalles de la Reparación</h1>";
 
-        // Tarjeta de reparación
         echo "<div class='card' style='width: 100%;'>";
         echo "<div class='card-body'>";
-        echo "<h5 class='card-title'>ID de la Reparación: {$model->getId()}</h5>";
         echo "<p class='card-text'><strong>Estado:</strong> {$model->getStatus()}</p>";
         echo "<p class='card-text'><strong>Nombre del Taller:</strong> {$model->getName()}</p>";
         echo "<p class='card-text'><strong>Fecha de Registro:</strong> " . ($model->getRegisterDate() ?: "No disponible") . "</p>";
         echo "<p class='card-text'><strong>Placa del Vehículo Dañado:</strong> " . ($model->getLicensePlate() ?: "No disponible") . "</p>";
 
-        // Mostrar la foto si existe
         if ($model->getPhoto()) {
-            echo "<div class='mb-3'><img src='{$model->getPhoto()}' alt='Foto del vehículo dañado' class='img-fluid'></div>";
+            echo "<div class='mb-3'><img src='http://localhost/M07_Pr1_Composer/uploads/{$model->getPhoto()}'alt='Foto del vehículo dañado' class='img-fluid' style='width: 200px; height: 200px;'></div>";
         } else {
             echo "<p><strong>No hay foto disponible.</strong></p>";
         }
 
         echo "</div>";
-        echo "</div>"; // Cierra la tarjeta
-        echo "</div>"; // Cierra el contenedor
+        echo "</div>";
+        echo "</div>";
     }
 }
