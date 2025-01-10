@@ -2,25 +2,18 @@
 
 
 if (isset($_GET["rol"])) {
-    if ($_GET["rol"] === "client") {
 ?>
-        <h2>Consulta de Reparación</h2>
-        <form action="../Controller/ControllerReparation.php" method="POST">
-            <label for="reparation_id">ID de Reparación:</label>
-            <input type="number" name="reparation_id" id="reparation_id" placeholder="Introduce el ID" required>
-            <br><br>
-            <button type="submit" name="action" value="consult">Consultar</button>
-        </form>
+    <h2>Consulta de Reparación</h2>
+    <form action="../Controller/ControllerReparation.php" method="POST">
+        <label for="reparation_id">UUID de Reparación:</label>
+        <input type="text" name="reparation_id" id="reparation_id" placeholder="Introduce el ID" required>
+        <br><br>
+        <button type="submit" name="action" value="consult">Consultar</button>
+    </form>
     <?php
-    } elseif ($_GET["rol"] === "employee") {
+    if ($_GET["rol"] === "employee") {
     ?>
-        <h2>Consulta de Reparación</h2>
-        <form action="../Controller/ControllerReparation.php" method="POST">
-            <label for="reparation_id">ID de Reparación:</label>
-            <input type="number" name="reparation_id" id="reparation_id" placeholder="Introduce el ID" required>
-            <br><br>
-            <button type="submit" name="action" value="consult">Consultar</button>
-        </form>
+
 
         <h2>Inserción de Reparación</h2>
         <form action="../Controller/ControllerReparation.php" method="POST" enctype="multipart/form-data">
@@ -58,6 +51,10 @@ class ViewReparation
 {
     public function render($model)
     {
+        if ($model instanceof ErrorMessage) {
+            echo "<div class='alert alert-danger' role='alert'>{$model->getMessage()}</div>";
+            return;
+        }
         if (!$model) {
             echo "<div class='alert alert-danger' role='alert'>Reparación no encontrada.</div>";
             return;
@@ -70,13 +67,14 @@ class ViewReparation
 
         echo "<div class='card' style='width: 100%;'>";
         echo "<div class='card-body'>";
+        echo "<h3 class='card-text'><strong>Id de la reparacion:</strong> {$model->getId()}</h3>";
         echo "<p class='card-text'><strong>Estado:</strong> {$model->getStatus()}</p>";
         echo "<p class='card-text'><strong>Nombre del Taller:</strong> {$model->getName()}</p>";
         echo "<p class='card-text'><strong>Fecha de Registro:</strong> " . ($model->getRegisterDate() ?: "No disponible") . "</p>";
         echo "<p class='card-text'><strong>Placa del Vehículo Dañado:</strong> " . ($model->getLicensePlate() ?: "No disponible") . "</p>";
 
         if ($model->getPhoto()) {
-            echo "<div class='mb-3'><img src='http://localhost/dashboard/M07_Pr1_Composer/uploads/{$model->getPhoto()}'alt='Foto del vehículo dañado' class='img-fluid' style='width: 200px; height: 200px;'></div>";
+            echo "<div class='mb-3'><img src='{$model->getPhoto()}'alt='Foto del vehículo dañado' class='img-fluid' style='width: 200px; height: 200px;'></div>";
         } else {
             echo "<p><strong>No hay foto disponible.</strong></p>";
         }

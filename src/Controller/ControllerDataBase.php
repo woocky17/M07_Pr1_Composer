@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../vendor/autoload.php';
-require_once __DIR__ . '/../log/MyLogger.php';
+require_once __DIR__ . '/../../log/MyLogger.php';
 
 
 class ControllerDataBase
@@ -49,7 +49,7 @@ class ControllerDataBase
 
                 $createTableSQL = "
                     CREATE TABLE IF NOT EXISTS `workshop`.`reparation` (
-                        `id` INT NOT NULL AUTO_INCREMENT,
+                        `id`  CHAR(36) NOT NULL,
                         `status` VARCHAR(255) NOT NULL,
                         `name` VARCHAR(255) NOT NULL,
                         `registerDate` DATE NOT NULL,

@@ -11,8 +11,9 @@ class Reparation extends ControllerDataBase
     private $licensePlate;
     private $photo;
 
-    public function __construct($status, $name, $registerDate, $licensePlate, $photo)
+    public function __construct($id, $status, $name, $registerDate, $licensePlate, $photo)
     {
+        $this->id = $id;
         $this->status = $status;
         $this->name = $name;
         $this->registerDate = $registerDate;
@@ -22,10 +23,6 @@ class Reparation extends ControllerDataBase
 
 
 
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
 
     public function getId()
     {
@@ -55,5 +52,20 @@ class Reparation extends ControllerDataBase
     public function getPhoto()
     {
         return $this->photo;
+    }
+}
+
+class ErrorMessage
+{
+    private $message;
+
+    public function __construct($message)
+    {
+        $this->message = $message;
+    }
+
+    public function getMessage()
+    {
+        return $this->message;
     }
 }
