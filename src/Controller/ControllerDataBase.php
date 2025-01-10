@@ -54,7 +54,7 @@ class ControllerDataBase
                         `name` VARCHAR(255) NOT NULL,
                         `registerDate` DATE NOT NULL,
                         `licensePlate` VARCHAR(20) NOT NULL,
-                        `photo` TEXT NOT NULL,
+                        `photo` LONGTEXT NOT NULL,
                         PRIMARY KEY (`id`)
                     ) ENGINE=InnoDB DEFAULT CHARSET=$charset;
                 ";

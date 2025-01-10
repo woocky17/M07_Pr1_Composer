@@ -2,6 +2,8 @@
 require_once '../Model/Reparation.php';
 
 use Ramsey\Uuid\Uuid;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ServiceReparation
 {
@@ -39,6 +41,23 @@ class ServiceReparation
             return null;
         }
 
+        if ($role === "client") {
+            $manager = new ImageManager(new Driver());
+            $base64Data = explode(',', $reparation->photo)[1];  // Obtener solo la parte base64
+            $imageData = base64_decode($base64Data);  // Decodificar la cadena base64
+
+            // Leer la imagen desde los datos binarios
+            $image = $manager->read($imageData);
+            $image->pixelate(30);
+
+            // Obtener la extensión de la imagen para el tipo MIME
+            $type = pathinfo($reparation->photo, PATHINFO_EXTENSION);
+
+            // Volver a convertir la imagen en base64 con el prefijo adecuado
+            $reparation->photo = 'data:image/' . $type . ';base64,' . base64_encode($image->encode());
+
+            $reparation->licensePlate = str_repeat('*', strlen($reparation->licensePlate));
+        }
 
         return new Reparation(
             $reparation->id,
@@ -60,6 +79,20 @@ class ServiceReparation
             $id =  $uuid->toString();
 
             $logger = MyLogger::createLogger("database");
+
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($photo);
+            $watermarkText = "UUID: $id\nMatricula: $licensePlate";
+
+            $image->text($watermarkText, 10, $image->height() - 50, function ($font) {
+                $font->size(20); // Tamaño del texto
+                $font->color('rgba(255, 255, 255, 0.7)'); // Color con transparencia
+                $font->align('left'); // Alineación horizontal
+                $font->valign('bottom'); // Alineación vertical
+            });
+
+            $photo = 'data:image/;base64,' . base64_encode($image->encode());
+
 
             $connection = new ControllerDataBase;
             $mysqli = $connection->connect();
@@ -95,6 +128,8 @@ class ServiceReparation
                 ]);
                 throw new Exception("Error de inserción: " . $e->getMessage());
             }
+
+
 
             return new Reparation($id, $status, $name, $registerDate, $licensePlate, $photo);
         } catch (Exception $e) {
