@@ -10,9 +10,9 @@
 <body>
     <h2>Choose your role</h2>
     <form action="View/ViewReparation.php">
-        <label for="rol">
+        <label for="role">
             Rol:
-            <select name="rol" id="">
+            <select name="role" id="role">
                 <option value="employee">Employee</option>
                 <option value="client">Client</option>
             </select>

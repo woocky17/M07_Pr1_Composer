@@ -1,17 +1,22 @@
 <?php
 
 
-if (isset($_GET["rol"])) {
+if (isset($_GET["role"])) {
 ?>
     <h2>Consulta de Reparación</h2>
     <form action="../Controller/ControllerReparation.php" method="POST">
+        <input type="hidden" id="role" name="role" value="<?php echo htmlspecialchars($_GET['role']); ?>">
+
         <label for="reparation_id">UUID de Reparación:</label>
         <input type="text" name="reparation_id" id="reparation_id" placeholder="Introduce el ID" required>
         <br><br>
+
         <button type="submit" name="action" value="consult">Consultar</button>
     </form>
+
+
     <?php
-    if ($_GET["rol"] === "employee") {
+    if ($_GET["role"] === "employee") {
     ?>
 
 

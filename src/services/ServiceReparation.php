@@ -5,7 +5,7 @@ use Ramsey\Uuid\Uuid;
 
 class ServiceReparation
 {
-    public function getReparation($idReparation)
+    public function getReparation($idReparation, $role)
     {
         $logger = MyLogger::createLogger("database");
 
