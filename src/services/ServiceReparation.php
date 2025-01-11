@@ -43,17 +43,14 @@ class ServiceReparation
 
         if ($role === "client") {
             $manager = new ImageManager(new Driver());
-            $base64Data = explode(',', $reparation->photo)[1];  // Obtener solo la parte base64
-            $imageData = base64_decode($base64Data);  // Decodificar la cadena base64
+            $base64Data = explode(',', $reparation->photo)[1];
+            $imageData = base64_decode($base64Data);
 
-            // Leer la imagen desde los datos binarios
             $image = $manager->read($imageData);
             $image->pixelate(30);
 
-            // Obtener la extensión de la imagen para el tipo MIME
             $type = pathinfo($reparation->photo, PATHINFO_EXTENSION);
 
-            // Volver a convertir la imagen en base64 con el prefijo adecuado
             $reparation->photo = 'data:image/' . $type . ';base64,' . base64_encode($image->encode());
 
             $reparation->licensePlate = str_repeat('*', strlen($reparation->licensePlate));
@@ -85,12 +82,11 @@ class ServiceReparation
             $watermarkText = "UUID: $id\nMatricula: $licensePlate";
 
             $image->text($watermarkText, 10, $image->height() - 50, function ($font) {
-                $font->size(20); // Tamaño del texto
-                $font->color('rgba(255, 255, 255, 0.7)'); // Color con transparencia
+                $font->size(200); // Tamaño del texto
+                $font->color('#FFFFFF'); // Color con transparencia
                 $font->align('left'); // Alineación horizontal
                 $font->valign('bottom'); // Alineación vertical
             });
-
             $photo = 'data:image/;base64,' . base64_encode($image->encode());
 
 
@@ -100,11 +96,11 @@ class ServiceReparation
             $sql = "INSERT INTO workshop.reparation (id, status, name, registerDate, licensePlate, photo) 
             VALUES (?, ?, ?, ?, ?, ?)";
 
-            $stmt = $mysqli->prepare($sql);
-
-            $stmt->bind_param("ssssss", $id, $status, $name, $registerDate, $licensePlate, $photo);
 
             try {
+                $stmt = $mysqli->prepare($sql);
+
+                $stmt->bind_param("ssssss", $id, $status, $name, $registerDate, $licensePlate, $photo);
                 if (!$stmt->execute()) {
                     throw new Exception("Error al ejecutar la consulta: " . $stmt->error);
                 }
@@ -114,7 +110,6 @@ class ServiceReparation
                     'name' => $name,
                     'registerDate' => $registerDate,
                     'licensePlate' => $licensePlate,
-                    'photo' => $photo,
                 ]);
                 $stmt->close();
             } catch (Exception $e) {
@@ -124,7 +119,6 @@ class ServiceReparation
                     'name' => $name,
                     'registerDate' => $registerDate,
                     'licensePlate' => $licensePlate,
-                    'photo' => $photo,
                 ]);
                 throw new Exception("Error de inserción: " . $e->getMessage());
             }

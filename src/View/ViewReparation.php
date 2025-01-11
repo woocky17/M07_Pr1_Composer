@@ -79,7 +79,7 @@ class ViewReparation
         echo "<p class='card-text'><strong>Placa del Vehículo Dañado:</strong> " . ($model->getLicensePlate() ?: "No disponible") . "</p>";
 
         if ($model->getPhoto()) {
-            echo "<div class='mb-3'><img src='{$model->getPhoto()}'alt='Foto del vehículo dañado' class='img-fluid' style='width: 200px; height: 200px;'></div>";
+            echo "<div class='mb-3'><img src='{$model->getPhoto()}'alt='Foto del vehículo dañado' class='img-fluid' '></div>";
         } else {
             echo "<p><strong>No hay foto disponible.</strong></p>";
         }
