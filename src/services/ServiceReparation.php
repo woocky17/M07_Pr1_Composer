@@ -98,6 +98,14 @@ class ServiceReparation
 
 
             try {
+
+                $licensePlateRegex = '/^[0-9]{4}-[A-Z]{3}$/';
+                if (!preg_match($licensePlateRegex, $licensePlate)) {
+                    $logger->warning("Formato de matrícula no válido.", [
+                        'license_plate' => $licensePlate
+                    ]);
+                    return null; // Detenemos el proceso si la matrícula es inválida
+                }
                 $stmt = $mysqli->prepare($sql);
 
                 $stmt->bind_param("ssssss", $id, $status, $name, $registerDate, $licensePlate, $photo);
